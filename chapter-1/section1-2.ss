@@ -65,10 +65,14 @@
 ;; implement this function using iterative recursion
 
 (define (f n)
-  (f-iter n 1 0 3))
+  ;; recursive implementation of f
+  (cond ((< n 3) n)
+        (else (+ (f (- n 1)) (f (- n 2)) (f (- n 3))))))
 
-;; doesn't work
-(define (f-iter n count result max-calls)
-  (if (< n 3)
-      n
-      (f-iter n (+ count 1) (* count (- n count)) max-calls)))
+(define (f-tail n)
+  ;; tail recursive implementation of f
+  (define (iter a b c count)
+    (if (= count 0)
+      a
+      (iter b c (+ c (* 2 b) (* 3 a)) (- count 1))))
+  (iter 0 1 2 n))
